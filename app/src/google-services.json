@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "891588121468",
+    "project_id": "shopmobile-9820d",
+    "storage_bucket": "shopmobile-9820d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891588121468:android:579c6d1a79e1aca8d44af9",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891588121468-gjs47mhuatp0soln0ob6ijms0rmf9dft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "b8c6974b2cfe92e17b39cd86ea883844018b1e7f"
+          }
+        },
+        {
+          "client_id": "891588121468-q0ttap358gvt3raugknh1cra4b9r2naj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDavzizcY4UQN78kK-RA7mvUugdx-l2Kb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891588121468-q0ttap358gvt3raugknh1cra4b9r2naj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

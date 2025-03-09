@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".Project.Login"
+            android:exported="true" >
+
+        </activity>
+        <activity
+            android:name=".Project.OrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Project.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Project.ProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Project.ProductActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".slot14.Slot14MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot13.Slot13MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot8.Slot9CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Slot8.Slot9DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Slot8.Slot8MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".slot6.Slot6MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SLot5.Slot51MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot4.Slot43MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot4.Slot42MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot4.Slot41MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot3.Slot35MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot3.Slot34MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot3.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot3.Slot32MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Slot3.Slot31MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot1.Slot13MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Slot1.Slot12MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Slot1.Slot11MainActivity"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.auth.api.signin"
+            android:value="@string/default_web_client_id" />
+    </application>
+
+</manifest>
