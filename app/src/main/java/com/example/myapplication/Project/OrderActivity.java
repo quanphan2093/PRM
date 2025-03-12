@@ -1,5 +1,7 @@
 package com.example.myapplication.Project;
 
+import static com.example.myapplication.Project.URL.PublicURL.URL_STRING;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -89,7 +91,7 @@ public class OrderActivity extends AppCompatActivity {
         strKq="";
         //b1 Create retrofit object
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.121.102/project/")
+                .baseUrl(URL_STRING)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         //b2 prepare the select function
@@ -113,7 +115,7 @@ public class OrderActivity extends AppCompatActivity {
     }
     private void InsertAddress() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.121.102/project/")
+                .baseUrl(URL_STRING)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -149,7 +151,7 @@ public class OrderActivity extends AppCompatActivity {
     // Bước 2: Insert Order sau khi có Address ID
     private void InsertOrder() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.121.102/project/")
+                .baseUrl(URL_STRING)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -157,7 +159,7 @@ public class OrderActivity extends AppCompatActivity {
         int paymentId = getIntent().getIntExtra("SELECTED_PAYMENT_ID", 1);
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = sharedPreferences.getString("userId", "");
-        Call<ResponseOrder> call = interfacrOrder.insertOrder(Integer.parseInt(userId), paymentId, newAddressId);
+        Call<ResponseOrder> call = interfacrOrder.insertOrder(Integer.parseInt(userId), paymentId, newAddressId,1);
         call.enqueue(new Callback<ResponseOrder>() {
             @Override
             public void onResponse(Call<ResponseOrder> call, Response<ResponseOrder> response) {
@@ -179,7 +181,7 @@ public class OrderActivity extends AppCompatActivity {
     // Bước 3: Insert danh sách sản phẩm vào Order
     private void InsertOrderDetail() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.121.102/project/")
+                .baseUrl(URL_STRING)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

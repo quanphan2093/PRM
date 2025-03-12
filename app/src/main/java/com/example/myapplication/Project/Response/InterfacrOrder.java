@@ -5,17 +5,20 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface InterfacrOrder {
     @GET("select_payment.php")
     Call<ResponseSelectPayment> GetData();
-
+    @GET("select_order.php")
+    Call<ResponseOrderCustomer> GetOrder(@Query("UserId") int userId);
     @FormUrlEncoded
     @POST("insert_order.php")
     Call<ResponseOrder> insertOrder(
             @Field("UserId") int userId,
             @Field("PaymentId") int PaymentId,
-            @Field("AddressId") int AddressId
+            @Field("AddressId") int AddressId,
+            @Field("StatusId") int StatusId
     );
 
     @FormUrlEncoded

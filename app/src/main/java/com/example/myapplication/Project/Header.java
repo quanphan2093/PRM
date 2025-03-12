@@ -73,14 +73,13 @@ public class Header extends Fragment {
             Intent intent = new Intent(getActivity(),ProductActivity.class);
             startActivity(intent);
         });
-
         cartIcon.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(),CartActivity.class);
             startActivity(intent);
         });
 
         orderIcon.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(),OrderActivity.class);
+            Intent intent = new Intent(getActivity(),OrderCustomerActivity.class);
             startActivity(intent);
         });
 
