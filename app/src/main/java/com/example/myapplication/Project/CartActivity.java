@@ -16,9 +16,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.myapplication.Project.Models.Cart;
 import com.example.myapplication.Project.Models.Product;
 import com.example.myapplication.R;
-import com.example.myapplication.Slot8.ProductSl8;
-import com.example.myapplication.Slot8.Slot9CartAdapter;
-import com.example.myapplication.Slot8.Slot9CartManager;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -16,9 +16,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.myapplication.Project.Models.Cart;
 import com.example.myapplication.Project.Models.Product;
 import com.example.myapplication.R;
-import com.example.myapplication.Slot8.ProductSl8;
-import com.example.myapplication.Slot8.Slot9CartActivity;
-import com.example.myapplication.Slot8.Slot9CartManager;
 import com.squareup.picasso.Picasso;
 
 public class ProductDetailActivity extends AppCompatActivity {

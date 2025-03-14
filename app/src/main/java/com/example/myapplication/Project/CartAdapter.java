@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.Project.Models.Product;
 import com.example.myapplication.R;
-import com.example.myapplication.Slot8.ProductSl8;
 
 import java.util.ArrayList;
 import java.util.HashSet;

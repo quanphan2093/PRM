@@ -29,10 +29,7 @@ import com.example.myapplication.Project.Response.ResponseOrder;
 import com.example.myapplication.Project.Response.ResponseSelectPayment;
 import com.example.myapplication.Project.Response.ResponseSelectProduct;
 import com.example.myapplication.R;
-import com.example.myapplication.Slot13.InterfaceInsertPrd;
-import com.example.myapplication.Slot13.Prod;
-import com.example.myapplication.Slot13.ResponseInsertPrd;
-import com.example.myapplication.Slot8.Slot8Adapter;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;

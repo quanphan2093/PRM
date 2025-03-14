@@ -1,8 +1,5 @@
 package com.example.myapplication.Project.Models;
 
-import com.example.myapplication.Slot8.ProductSl8;
-import com.example.myapplication.Slot8.Slot9CartManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
