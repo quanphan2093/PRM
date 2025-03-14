@@ -48,5 +48,9 @@ public class Slot14MainActivity extends AppCompatActivity {
             FunctionVolley functionVolley = new FunctionVolley();
             functionVolley.read_json_Array_of_objects(context,tvKQ);
         });
+        btnInsert.setOnClickListener(v -> {
+            FunctionVolley functionVolley = new FunctionVolley();
+            functionVolley.insertVolley(context,tvKQ,txtId.getText().toString(),txtName.getText().toString(),txtPrice.getText().toString(),txtDescription.getText().toString() );
+        });
     }
 }

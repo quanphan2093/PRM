@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.PixelCopy;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,6 +18,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FunctionVolley {
     public void readHtmlByVolleyStringRequest(Context context, TextView textView){
@@ -62,6 +68,35 @@ public class FunctionVolley {
                 textView.setText(volleyError.getMessage());
             }
         });
+        queue.add(request);
+    }
+
+    public void insertVolley(Context context, TextView tvKQ, String id, String name, String price, String des){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(Request.Method.POST, "http://10.22.10.72/0api6/insert_prd.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        tvKQ.setText("insert thanh cong");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        tvKQ.setText(error.getMessage());
+                    }
+                }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> m = new HashMap<>();
+                m.put("id", id);
+                m.put("name", name);
+                m.put("price", price);
+                m.put("description", des);
+                return m;
+            }
+        };
         queue.add(request);
     }
 
