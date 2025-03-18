@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,6 +55,7 @@ public class OrderCustomerAdapter extends BaseAdapter {
             viewHolder.Address = convertView.findViewById(R.id.order_address);
             viewHolder.img = convertView.findViewById(R.id.image_order);
             viewHolder.Status = convertView.findViewById(R.id.order_customer_status);
+            viewHolder.btnCancel = convertView.findViewById(R.id.btnCancel);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (OrderViewHoldere) convertView.getTag();
@@ -68,6 +70,16 @@ public class OrderCustomerAdapter extends BaseAdapter {
             viewHolder.Address.setText(order.getLocation());
             viewHolder.Status.setText(order.getStatus());
 //            viewHolder.img.setText(order.get);
+            if (order.getStatusId() == 1) {
+                viewHolder.btnCancel.setVisibility(View.GONE);
+            } else {
+                viewHolder.btnCancel.setVisibility(View.VISIBLE);
+            }
+
+            viewHolder.btnCancel.setOnClickListener(v -> {
+                order.setStatusId(1);
+                notifyDataSetChanged();
+            });
         }
         return convertView;
     }
@@ -79,5 +91,6 @@ public class OrderCustomerAdapter extends BaseAdapter {
     static class OrderViewHoldere{
         ImageView img;
         TextView ProdName, Quantity,Price, Phone,Address, Status;
+        Button btnCancel;
     }
 }

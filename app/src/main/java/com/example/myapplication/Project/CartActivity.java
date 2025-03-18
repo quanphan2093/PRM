@@ -24,30 +24,34 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnPro
     ListView listView;
     CartAdapter adapter;
     Button btnAdd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cart);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        listView= findViewById(R.id.list_cart);
+
+        listView = findViewById(R.id.list_cart);
         btnAdd = findViewById(R.id.order);
-//        btnAdd.setVisibility(View.GONE);
-        Cart cart= Cart.getInstance(); //only one
-        List<Product> cartItem = cart.getCartItems(); //cart item for cartManager
-        //init adapter
-        adapter = new CartAdapter(this,cartItem,this);
+        btnAdd.setVisibility(View.GONE); // Ban đầu ẩn nút Order
+
+        // Lấy sản phẩm trong giỏ hàng
+        Cart cart = Cart.getInstance();
+        List<Product> cartItem = cart.getCartItems();
+
+        // Khởi tạo adapter
+        adapter = new CartAdapter(this, cartItem, this);
         listView.setAdapter(adapter);
+
+        // Xử lý khi nhấn Order
         btnAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
             List<Product> selectedProducts = adapter.getSelectedProducts();
-            addToOrder(selectedProducts);
-            intent.putParcelableArrayListExtra("SELECTED_PRODUCTS", new ArrayList<>(selectedProducts));
-            startActivity(intent);
+            if (!selectedProducts.isEmpty()) {
+                addToOrder(selectedProducts);
+                Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                intent.putParcelableArrayListExtra("SELECTED_PRODUCTS", new ArrayList<>(selectedProducts));
+                startActivity(intent);
+            }
         });
     }
 
@@ -55,14 +59,11 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnPro
     public void onProductSelected(boolean hasSelection) {
         btnAdd.setVisibility(hasSelection ? View.VISIBLE : View.GONE);
     }
+
     private void addToOrder(List<Product> selectedProducts) {
         for (Product product : selectedProducts) {
             OrderManager.getInstance().addProduct(product);
         }
         Toast.makeText(this, "Đã thêm vào đơn hàng!", Toast.LENGTH_SHORT).show();
-    }
-    private List<Product> getCartProducts() {
-        // Hàm lấy danh sách sản phẩm từ giỏ hàng
-        return Cart.getInstance().getCartItems();
     }
 }

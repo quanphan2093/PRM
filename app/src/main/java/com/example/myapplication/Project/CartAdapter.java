@@ -33,52 +33,78 @@ public class CartAdapter extends ArrayAdapter<Product> {
         this.productList = productList;
         this.listener = listener;
     }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
-        if(listItem == null){
-            listItem= LayoutInflater.from(context).inflate(R.layout.cart_adapter,parent,false);
+        if (listItem == null) {
+            listItem = LayoutInflater.from(context).inflate(R.layout.cart_adapter, parent, false);
         }
-        //get current product
+
         Product currentProduct = getItem(position);
-        //display info of product in cart
+        if (currentProduct == null) return listItem;
+
+        // Hiển thị thông tin sản phẩm
         TextView ProdName = listItem.findViewById(R.id.cart_product_name);
         ProdName.setText(currentProduct.getProdName());
+
         TextView Price = listItem.findViewById(R.id.cart_price);
         Price.setText(String.valueOf(currentProduct.getPrice()));
+
         EditText quantity = listItem.findViewById(R.id.cart_quantity);
         quantity.setText(String.valueOf(currentProduct.getQuantity()));
+
+        // Xử lý chọn sản phẩm
         RadioButton radioSelect = listItem.findViewById(R.id.cart_radiobtn);
         radioSelect.setChecked(selectedPositions.contains(position));
         radioSelect.setOnClickListener(v -> {
             if (selectedPositions.contains(position)) {
-                selectedPositions.remove(position); // Nếu đang bật, thì tắt
-                radioSelect.setChecked(false);
+                selectedPositions.remove(position);
             } else {
-                selectedPositions.add(position); // Nếu đang tắt, thì bật
-                radioSelect.setChecked(true);
+                selectedPositions.add(position);
             }
+            notifyProductSelection();
         });
+
+        // Xóa sản phẩm khỏi giỏ hàng
         Button btnDelete = listItem.findViewById(R.id.cart_btndelete);
         btnDelete.setOnClickListener(v -> {
             productList.remove(position);
+            selectedPositions.remove(position); // Xóa khỏi danh sách chọn
             notifyDataSetChanged();
+            notifyProductSelection();
         });
+
+        // Cập nhật số lượng sản phẩm
         Button btnUpdate = listItem.findViewById(R.id.cart_btnupdate);
-        btnUpdate.setOnClickListener( v ->{
-            int newQuantity = Integer.parseInt(quantity.getText().toString());
+        btnUpdate.setOnClickListener(v -> {
+            int newQuantity;
+            try {
+                newQuantity = Integer.parseInt(quantity.getText().toString());
+            } catch (NumberFormatException e) {
+                newQuantity = currentProduct.getQuantity(); // Giữ nguyên nếu nhập sai
+            }
             currentProduct.setQuantity(newQuantity);
             currentProduct.setPrice(newQuantity * currentProduct.getUnitPrice());
             notifyDataSetChanged();
         });
+
         return listItem;
+    }
+
+    private void notifyProductSelection() {
+        if (listener != null) {
+            listener.onProductSelected(!selectedPositions.isEmpty());
+        }
     }
 
     public List<Product> getSelectedProducts() {
         List<Product> selectedProducts = new ArrayList<>();
         for (int pos : selectedPositions) {
-            selectedProducts.add(productList.get(pos));
+            if (pos < productList.size()) {
+                selectedProducts.add(productList.get(pos));
+            }
         }
         return selectedProducts;
     }

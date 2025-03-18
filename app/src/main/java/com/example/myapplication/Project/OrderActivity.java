@@ -3,6 +3,7 @@ package com.example.myapplication.Project;
 import static com.example.myapplication.Project.URL.PublicURL.URL_STRING;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,6 +82,8 @@ public class OrderActivity extends AppCompatActivity {
         SelectData();
         btnOrder.setOnClickListener(v -> {
             InsertAddress();
+            Intent intent = new Intent(context,OrderCustomerActivity.class);
+            context.startActivity(intent);
         });
     }
 
@@ -170,6 +173,7 @@ public class OrderActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseOrder> call, Throwable t) {
+                Log.e("OrderActivity", "Lỗi mạng khi tạo đơn hàng: " + t.getMessage(), t);
                 Toast.makeText(getApplicationContext(), "Lỗi mạng khi tạo đơn hàng!", Toast.LENGTH_LONG).show();
             }
         });

@@ -1,5 +1,7 @@
 package com.example.myapplication.Project;
 
+import static com.example.myapplication.Project.URL.PublicURL.URL_STRING;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,7 +57,7 @@ public class OrderCustomerActivity extends AppCompatActivity {
         strKq="";
         //b1 Create retrofit object
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.121.102/project/")
+                .baseUrl(URL_STRING)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         //b2 prepare the select function

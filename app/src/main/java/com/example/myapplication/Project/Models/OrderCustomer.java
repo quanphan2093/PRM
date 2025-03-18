@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class OrderCustomer implements Parcelable {
-    private int OrderId,UserId;
+    private int OrderId,UserId,StatusId;
     private String OrderDate, ProductName, PaymentMethod, Location, PhoneNumber, Note, Status;
     private int Quantity;
     private float Price;
@@ -14,7 +14,7 @@ public class OrderCustomer implements Parcelable {
     public OrderCustomer() {
     }
 
-    public OrderCustomer(int orderId, String status, int userId, String orderDate, String productName, String paymentMethod, String location, String phoneNumber, String note, int quantity, float price) {
+    public OrderCustomer(int orderId, int statusId, String status, int userId, String orderDate, String productName, String paymentMethod, String location, String phoneNumber, String note, int quantity, float price) {
         OrderId = orderId;
         UserId = userId;
         OrderDate = orderDate;
@@ -26,6 +26,7 @@ public class OrderCustomer implements Parcelable {
         Note = note;
         Quantity = quantity;
         Price = price;
+        StatusId = statusId;
     }
 
     protected OrderCustomer(Parcel in) {
@@ -40,6 +41,7 @@ public class OrderCustomer implements Parcelable {
         Quantity = in.readInt();
         Price = in.readFloat();
         Status=in.readString();
+        StatusId = in.readInt();
     }
 
     public static final Creator<OrderCustomer> CREATOR = new Creator<OrderCustomer>() {
@@ -53,6 +55,14 @@ public class OrderCustomer implements Parcelable {
             return new OrderCustomer[size];
         }
     };
+
+    public int getStatusId() {
+        return StatusId;
+    }
+
+    public void setStatusId(int statusId) {
+        StatusId = statusId;
+    }
 
     public int getOrderId() {
         return OrderId;
@@ -160,5 +170,6 @@ public class OrderCustomer implements Parcelable {
         parcel.writeInt(Quantity);
         parcel.writeFloat(Price);
         parcel.writeString(Status);
+        parcel.writeInt(StatusId);
     }
 }
