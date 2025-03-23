@@ -44,4 +44,11 @@ public class OrderProductAdapter extends ArrayAdapter<Product> {
 
         return listItem;
     }
+
+    public void updateData(List<Product> newProducts) {
+        selectedProducts.clear();
+        selectedProducts.addAll(newProducts);
+        notifyDataSetChanged();
+    }
+
 }

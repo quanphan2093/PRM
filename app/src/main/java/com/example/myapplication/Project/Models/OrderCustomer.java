@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 public class OrderCustomer implements Parcelable {
     private int OrderId,UserId,StatusId;
-    private String OrderDate, ProductName, PaymentMethod, Location, PhoneNumber, Note, Status;
+    private String OrderDate, ProdName, PaymentMethod, Location, PhoneNumber, Note, StatusOrder;
     private int Quantity;
     private float Price;
 
@@ -18,9 +18,9 @@ public class OrderCustomer implements Parcelable {
         OrderId = orderId;
         UserId = userId;
         OrderDate = orderDate;
-        ProductName = productName;
+        ProdName = productName;
         PaymentMethod = paymentMethod;
-        Status= status;
+        StatusOrder= status;
         Location = location;
         PhoneNumber = phoneNumber;
         Note = note;
@@ -33,14 +33,14 @@ public class OrderCustomer implements Parcelable {
         OrderId = in.readInt();
         UserId = in.readInt();
         OrderDate = in.readString();
-        ProductName = in.readString();
+        ProdName = in.readString();
         PaymentMethod = in.readString();
         Location = in.readString();
         PhoneNumber = in.readString();
         Note = in.readString();
         Quantity = in.readInt();
         Price = in.readFloat();
-        Status=in.readString();
+        StatusOrder=in.readString();
         StatusId = in.readInt();
     }
 
@@ -89,11 +89,11 @@ public class OrderCustomer implements Parcelable {
     }
 
     public String getProductName() {
-        return ProductName;
+        return ProdName;
     }
 
     public void setProductName(String productName) {
-        ProductName = productName;
+        ProdName = productName;
     }
 
     public String getPaymentMethod() {
@@ -150,11 +150,11 @@ public class OrderCustomer implements Parcelable {
     }
 
     public String getStatus() {
-        return Status;
+        return StatusOrder;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        StatusOrder = status;
     }
 
     @Override
@@ -162,14 +162,14 @@ public class OrderCustomer implements Parcelable {
         parcel.writeInt(OrderId);
         parcel.writeInt(UserId);
         parcel.writeString(OrderDate);
-        parcel.writeString(ProductName);
+        parcel.writeString(ProdName);
         parcel.writeString(PaymentMethod);
         parcel.writeString(Location);
         parcel.writeString(PhoneNumber);
         parcel.writeString(Note);
         parcel.writeInt(Quantity);
         parcel.writeFloat(Price);
-        parcel.writeString(Status);
+        parcel.writeString(StatusOrder);
         parcel.writeInt(StatusId);
     }
 }

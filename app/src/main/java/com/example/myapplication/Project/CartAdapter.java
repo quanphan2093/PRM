@@ -1,5 +1,6 @@
 package com.example.myapplication.Project;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,29 +68,34 @@ public class CartAdapter extends ArrayAdapter<Product> {
             notifyProductSelection();
         });
 
-        // Xóa sản phẩm khỏi giỏ hàng
         Button btnDelete = listItem.findViewById(R.id.cart_btndelete);
         btnDelete.setOnClickListener(v -> {
-            productList.remove(position);
-            selectedPositions.remove(position); // Xóa khỏi danh sách chọn
-            notifyDataSetChanged();
-            notifyProductSelection();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Xác nhận xóa");
+            builder.setMessage("Bạn có chắc chắn muốn xóa sản phẩm này không?");
+            builder.setPositiveButton("Có", (dialog, which) -> {
+                productList.remove(position);
+                selectedPositions.remove(position);
+                notifyDataSetChanged();
+                notifyProductSelection();
+            });
+            builder.setNegativeButton("Không", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
 
-        // Cập nhật số lượng sản phẩm
         Button btnUpdate = listItem.findViewById(R.id.cart_btnupdate);
         btnUpdate.setOnClickListener(v -> {
             int newQuantity;
             try {
                 newQuantity = Integer.parseInt(quantity.getText().toString());
             } catch (NumberFormatException e) {
-                newQuantity = currentProduct.getQuantity(); // Giữ nguyên nếu nhập sai
+                newQuantity = currentProduct.getQuantity();
             }
             currentProduct.setQuantity(newQuantity);
             currentProduct.setPrice(newQuantity * currentProduct.getUnitPrice());
             notifyDataSetChanged();
         });
-
         return listItem;
     }
 

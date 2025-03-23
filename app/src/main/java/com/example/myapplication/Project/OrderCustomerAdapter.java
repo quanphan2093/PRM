@@ -1,6 +1,7 @@
 package com.example.myapplication.Project;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -75,11 +76,22 @@ public class OrderCustomerAdapter extends BaseAdapter {
             } else {
                 viewHolder.btnCancel.setVisibility(View.VISIBLE);
             }
-
             viewHolder.btnCancel.setOnClickListener(v -> {
-                order.setStatusId(1);
-                notifyDataSetChanged();
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Xác nhận hủy đơn");
+                builder.setMessage("Bạn có chắc chắn muốn hủy đơn hàng này không?");
+
+                builder.setPositiveButton("Có", (dialog, which) -> {
+                    order.setStatusId(1);
+                    notifyDataSetChanged();
+                });
+
+                builder.setNegativeButton("Không", (dialog, which) -> dialog.dismiss());
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             });
+
         }
         return convertView;
     }
