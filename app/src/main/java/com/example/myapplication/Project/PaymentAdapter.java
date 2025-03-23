@@ -72,6 +72,9 @@ public class PaymentAdapter extends BaseAdapter {
 
         return convertView;
     }
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
     public void updateData(List<Payment> newList) {
         list.clear();
         list.addAll(newList);

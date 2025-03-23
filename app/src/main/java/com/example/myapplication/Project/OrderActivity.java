@@ -5,6 +5,7 @@ import static com.example.myapplication.Project.URL.PublicURL.URL_STRING;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -18,6 +19,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.myapplication.Project.Models.Address;
 import com.example.myapplication.Project.Models.Order;
 import com.example.myapplication.Project.Models.OrderDetail;
@@ -25,16 +31,27 @@ import com.example.myapplication.Project.Models.Payment;
 import com.example.myapplication.Project.Models.Product;
 import com.example.myapplication.Project.Response.InterfaceProduct;
 import com.example.myapplication.Project.Response.InterfacrOrder;
+import com.example.myapplication.Project.Response.PaymentResponse;
 import com.example.myapplication.Project.Response.ResponeProduct;
 import com.example.myapplication.Project.Response.ResponseOrder;
 import com.example.myapplication.Project.Response.ResponseSelectPayment;
 import com.example.myapplication.Project.Response.ResponseSelectProduct;
+import com.example.myapplication.Project.Response.RetrofitClient;
+import com.example.myapplication.Project.Response.VNPayApiService;
+import com.example.myapplication.Project.Response.VNPayResponse;
 import com.example.myapplication.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +60,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OrderActivity extends AppCompatActivity {
-
+    private static final int PAYMENT_REQUEST_CODE = 1001;
     ListView lvProduct, lvPayment;
     EditText location, phoneNumber, Note;
     Button btnOrder;
@@ -81,12 +98,96 @@ public class OrderActivity extends AppCompatActivity {
         lvPayment.setAdapter(paymentAdapter);
         SelectData();
         btnOrder.setOnClickListener(v -> {
-            InsertAddress();
-            Intent intent = new Intent(context,OrderCustomerActivity.class);
-            context.startActivity(intent);
+            if (isVNPaySelected()) {
+                processVNPayPayment();
+            } else {
+                InsertAddress();
+                Intent intent = new Intent(context, OrderCustomerActivity.class);
+                context.startActivity(intent);
+            }
         });
     }
 
+    private boolean isVNPaySelected() {
+        if (paymentAdapter != null && paymentAdapter.getSelectedPosition() != -1) {
+            Payment selectedPayment = payments.get(paymentAdapter.getSelectedPosition());
+            return selectedPayment.getPaymentId()==2;
+        }
+        return false;
+    }
+    private void processVNPayPayment() {
+
+        VNPayApiService apiService = RetrofitClient.getClient().create(VNPayApiService.class);
+        Call<VNPayResponse> call = apiService.createPayment(String.valueOf(getTotalAmount()));
+
+        call.enqueue(new Callback<VNPayResponse>() {
+            @Override
+            public void onResponse(Call<VNPayResponse> call, Response<VNPayResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String paymentUrl = response.body().getPaymentUrl();
+                    if (paymentUrl != null) {
+                        openVNPay(paymentUrl);
+                    } else {
+                        Log.e("VNPay", "Missing 'payment_url' in response");
+                    }
+                } else {
+                    Log.e("VNPay", "Response failed: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VNPayResponse> call, Throwable t) {
+                Log.e("VNPay", "API Call Failed: " + t.getMessage());
+            }
+        });
+    }
+    private int getTotalAmount() {
+        if (selectedProducts == null) return 0;
+        int total = 0;
+        for (Product product : selectedProducts) {
+            total += product.getPrice() * product.getQuantity();
+        }
+        return total;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PAYMENT_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                checkVNPayStatus();
+            } else {
+                Toast.makeText(this, "Thanh toán bị hủy!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public void checkVNPayStatus() {
+        VNPayApiService api = RetrofitClient.getClient().create(VNPayApiService.class);
+        Call<PaymentResponse> call = api.checkVNPayStatus();
+        call.enqueue(new Callback<PaymentResponse>() {
+            @Override
+            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        InsertOrder();
+                        Toast.makeText(getApplicationContext(), "Thanh toán thành công!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), OrderCustomerActivity.class));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Thanh toán thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<PaymentResponse> call, Throwable t) {
+                Log.e("VNPay", "Lỗi: " + t.getMessage());
+            }
+        });
+    }
+    private void openVNPay(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
     private void SelectData(){
         strKq="";
         //b1 Create retrofit object
@@ -148,7 +249,6 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
-    // Bước 2: Insert Order sau khi có Address ID
     private void InsertOrder() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL_STRING)
@@ -179,7 +279,6 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
-    // Bước 3: Insert danh sách sản phẩm vào Order
     private void InsertOrderDetail() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL_STRING)

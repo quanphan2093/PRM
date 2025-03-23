@@ -4,14 +4,21 @@ $host = "localhost"; $u="root";$p="";$db="project";
 $conn = new mysqli($host,$u,$p,$db);
 
 if (isset($_GET['UserId'])) {
-    $UserId = $conn->real_escape_string($_GET['UserId']); 
+    $UserId = $conn->real_escape_string($_GET['UserId']);
 
-    $sql = "SELECT * FROM `order` 
+    // Câu truy vấn
+    $sql = "SELECT `order`.*, 
+                   orderdetail.*, 
+                   product.*, 
+                   `address`.*, 
+                   payment.*, 
+                   `status`.*
+            FROM `order` 
             JOIN orderdetail ON `order`.orderid = orderdetail.orderid 
-            JOIN product on orderdetail.prodId = product.prodId
-            JOIN `address` on `address`.addressid = `order`.addressid
-            JOIN payment on `order`.paymentid = payment.paymentid
-            JOIN `status` on `status`.statusid = `order`.statusid 
+            JOIN product ON orderdetail.prodId = product.prodId
+            JOIN `address` ON `address`.addressid = `order`.addressid
+            JOIN payment ON `order`.paymentid = payment.paymentid
+            JOIN `status` ON `status`.statusid = `order`.statusid 
             WHERE `order`.userid = '$UserId'";
 
     $result = $conn->query($sql);

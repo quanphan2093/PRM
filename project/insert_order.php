@@ -10,7 +10,7 @@ if( isset($_POST['UserId']) && isset($_POST['PaymentId'])&& isset($_POST['Addres
     $PaymentId = $_POST['PaymentId'];
     $AddressId = $_POST['AddressId'];
     $StatusId = $_POST['StatusId'];
-    $sql = "insert into `order` (OrderDate,UserId,PaymentId,AddressId) values ('$orderDate', '$UserId', '$PaymentId', '$AddressId', '$StatusId')";
+    $sql = "insert into `order` (OrderDate,UserId,PaymentId,AddressId,StatusId) values ('$orderDate', '$UserId', '$PaymentId', '$AddressId', '$StatusId')";
     if($conn->query($sql)===TRUE){
         $response['success']=1;
         $response['message']="Insert thanh cong";
