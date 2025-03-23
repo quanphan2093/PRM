@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.myapplication.Project.Models.OrderCustomer;
 import com.example.myapplication.Project.Models.Payment;
 import com.example.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -70,7 +71,11 @@ public class OrderCustomerAdapter extends BaseAdapter {
             viewHolder.Quantity.setText(String.valueOf(order.getQuantity()));
             viewHolder.Address.setText(order.getLocation());
             viewHolder.Status.setText(order.getStatus());
-//            viewHolder.img.setText(order.get);
+            Picasso.get()
+                    .load(order.getImage()) // URL ảnh
+                    .placeholder(R.drawable.cart) // Ảnh tạm
+                    .error(R.drawable.border) // Nếu lỗi
+                    .into(viewHolder.img);
             if (order.getStatusId() == 1) {
                 viewHolder.btnCancel.setVisibility(View.GONE);
             } else {
@@ -82,7 +87,7 @@ public class OrderCustomerAdapter extends BaseAdapter {
                 builder.setMessage("Bạn có chắc chắn muốn hủy đơn hàng này không?");
 
                 builder.setPositiveButton("Có", (dialog, which) -> {
-                    order.setStatusId(1);
+                    order.setStatusId(2);
                     notifyDataSetChanged();
                 });
 

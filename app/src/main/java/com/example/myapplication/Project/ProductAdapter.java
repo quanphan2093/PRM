@@ -2,6 +2,7 @@ package com.example.myapplication.Project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.Project.Models.Cart;
 import com.example.myapplication.Project.Models.Product;
 import com.example.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -63,6 +66,11 @@ public class ProductAdapter extends BaseAdapter {
             viewHolder.ProdName.setText(p.getProdName());
             viewHolder.CateName.setText(p.getCateName());
             viewHolder.Price.setText(String.valueOf(p.getPrice()));
+            Picasso.get()
+                    .load(p.getImage()) // URL ảnh
+                    .placeholder(R.drawable.cart) // Ảnh tạm
+                    .error(R.drawable.border) // Nếu lỗi
+                    .into(viewHolder.img);
         }
         //---event---
         viewHolder.btnDetail.setOnClickListener(v ->{
@@ -74,7 +82,6 @@ public class ProductAdapter extends BaseAdapter {
         viewHolder.btnAdd.setOnClickListener(v -> {
             Cart cart = Cart.getInstance();
             Product product = list.get(position);
-
             boolean productExists = false;
             for (Product pro : cart.getCartItems()) {
                 if (pro.getProdId() == product.getProdId()) { // Kiểm tra sản phẩm đã có trong giỏ chưa
@@ -85,18 +92,21 @@ public class ProductAdapter extends BaseAdapter {
                 }
             }
             if (!productExists) { // Nếu chưa có trong giỏ, thêm mới
-                product.setQuantity(1);
-                product.setPrice(product.getPrice()); // Giá ban đầu = 1 * unitPrice
-                product.setUnitPrice(product.getPrice());
-                cart.addProductToCart(product);
+                Product newProduct = new Product();
+                newProduct.setProdId(product.getProdId());  // Set ID
+                newProduct.setProdName(product.getProdName()); // Set tên
+                newProduct.setImage(product.getImage()); // Set ảnh
+                newProduct.setUnitPrice(product.getPrice()); // Đơn giá ban đầu
+                newProduct.setQuantity(1);
+                newProduct.setPrice(newProduct.getQuantity() * newProduct.getUnitPrice()); // Tính tổng giá
+
+                cart.addProductToCart(newProduct);
             }
 
             Intent intent = new Intent(context, CartActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); // Không mở activity mới nếu đã tồn tại
             context.startActivity(intent);
         });
-
-
         //---edn event...
         return convertView;
     }

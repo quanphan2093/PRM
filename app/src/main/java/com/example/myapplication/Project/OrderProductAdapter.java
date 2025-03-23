@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.Project.Models.Product;
 import com.example.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -41,7 +43,13 @@ public class OrderProductAdapter extends ArrayAdapter<Product> {
         CateName.setText(currentProduct.getCateName());
         TextView quantity = listItem.findViewById(R.id.order_quantity);
         quantity.setText(String.valueOf(currentProduct.getQuantity()));
-
+        ImageView image = listItem.findViewById(R.id.cart_image);
+        String imageUrl = currentProduct.getImage();
+        Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.cart)
+                .error(R.drawable.border)
+                .into(image);
         return listItem;
     }
 

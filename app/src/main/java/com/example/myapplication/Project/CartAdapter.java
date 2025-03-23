@@ -8,14 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.Project.Models.Product;
 import com.example.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,9 +45,7 @@ public class CartAdapter extends ArrayAdapter<Product> {
         if (listItem == null) {
             listItem = LayoutInflater.from(context).inflate(R.layout.cart_adapter, parent, false);
         }
-
         Product currentProduct = getItem(position);
-        if (currentProduct == null) return listItem;
 
         // Hiển thị thông tin sản phẩm
         TextView ProdName = listItem.findViewById(R.id.cart_product_name);
@@ -56,6 +57,13 @@ public class CartAdapter extends ArrayAdapter<Product> {
         EditText quantity = listItem.findViewById(R.id.cart_quantity);
         quantity.setText(String.valueOf(currentProduct.getQuantity()));
 
+        ImageView image = listItem.findViewById(R.id.cart_image);
+        String imageUrl = currentProduct.getImage();
+        Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.cart)
+                .error(R.drawable.border)
+                .into(image);
         // Xử lý chọn sản phẩm
         RadioButton radioSelect = listItem.findViewById(R.id.cart_radiobtn);
         radioSelect.setChecked(selectedPositions.contains(position));
@@ -117,5 +125,11 @@ public class CartAdapter extends ArrayAdapter<Product> {
 
     public interface OnProductSelectedListener {
         void onProductSelected(boolean hasSelection);
+    }
+
+    public void updateList(List<Product> newList) {
+        this.productList.clear();
+        this.productList.addAll(newList);
+        notifyDataSetChanged();
     }
 }

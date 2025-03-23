@@ -7,14 +7,14 @@ import androidx.annotation.NonNull;
 
 public class OrderCustomer implements Parcelable {
     private int OrderId,UserId,StatusId;
-    private String OrderDate, ProdName, PaymentMethod, Location, PhoneNumber, Note, StatusOrder;
+    private String OrderDate, ProdName, PaymentMethod, Location, PhoneNumber, Note, StatusOrder, Image;
     private int Quantity;
     private float Price;
 
     public OrderCustomer() {
     }
 
-    public OrderCustomer(int orderId, int statusId, String status, int userId, String orderDate, String productName, String paymentMethod, String location, String phoneNumber, String note, int quantity, float price) {
+    public OrderCustomer(String image,int orderId, int statusId, String status, int userId, String orderDate, String productName, String paymentMethod, String location, String phoneNumber, String note, int quantity, float price) {
         OrderId = orderId;
         UserId = userId;
         OrderDate = orderDate;
@@ -27,6 +27,7 @@ public class OrderCustomer implements Parcelable {
         Quantity = quantity;
         Price = price;
         StatusId = statusId;
+        Image= image;
     }
 
     protected OrderCustomer(Parcel in) {
@@ -42,6 +43,7 @@ public class OrderCustomer implements Parcelable {
         Price = in.readFloat();
         StatusOrder=in.readString();
         StatusId = in.readInt();
+        Image= in.readString();
     }
 
     public static final Creator<OrderCustomer> CREATOR = new Creator<OrderCustomer>() {
@@ -55,6 +57,30 @@ public class OrderCustomer implements Parcelable {
             return new OrderCustomer[size];
         }
     };
+
+    public String getProdName() {
+        return ProdName;
+    }
+
+    public void setProdName(String prodName) {
+        ProdName = prodName;
+    }
+
+    public String getStatusOrder() {
+        return StatusOrder;
+    }
+
+    public void setStatusOrder(String statusOrder) {
+        StatusOrder = statusOrder;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
+    }
 
     public int getStatusId() {
         return StatusId;
@@ -171,5 +197,6 @@ public class OrderCustomer implements Parcelable {
         parcel.writeFloat(Price);
         parcel.writeString(StatusOrder);
         parcel.writeInt(StatusId);
+        parcel.writeString(Image);
     }
 }

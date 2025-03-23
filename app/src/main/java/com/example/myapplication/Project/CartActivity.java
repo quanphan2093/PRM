@@ -2,6 +2,7 @@ package com.example.myapplication.Project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -38,11 +39,10 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnPro
         // Lấy sản phẩm trong giỏ hàng
         Cart cart = Cart.getInstance();
         List<Product> cartItem = cart.getCartItems();
-
+        Log.d("CartDebug", "Số lượng sản phẩm trong giỏ: " + cartItem.size());
         // Khởi tạo adapter
         adapter = new CartAdapter(this, cartItem, this);
         listView.setAdapter(adapter);
-
         // Xử lý khi nhấn Order
         btnAdd.setOnClickListener(v -> {
             List<Product> selectedProducts = adapter.getSelectedProducts();

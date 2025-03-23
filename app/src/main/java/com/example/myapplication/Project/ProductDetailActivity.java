@@ -40,6 +40,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         CateName =findViewById(R.id.tv_prd_category);
         ProdDetail =findViewById(R.id.detail_product);
         Quantity =findViewById(R.id.tv_prd_quantity);
+
         Price =findViewById(R.id.tv_prd_price);
         btnAdd =findViewById(R.id.btn_prd_AddToCart);
         Intent intent = getIntent();
@@ -50,6 +51,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             CateName.setText(product.getCateName());
             Quantity.setText("1");
             ProdDetail.setText(product.getProdDetail());
+            Picasso.get()
+                    .load(product.getImage())
+                    .placeholder(R.drawable.cart)
+                    .error(R.drawable.border)
+                    .into(imageView);
         }
 
         btnAdd.setOnClickListener(v -> {
