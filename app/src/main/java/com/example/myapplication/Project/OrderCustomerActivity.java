@@ -3,6 +3,7 @@ package com.example.myapplication.Project;
 import static com.example.myapplication.Project.URL.PublicURL.URL_STRING;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -52,7 +53,6 @@ public class OrderCustomerActivity extends AppCompatActivity {
         lv.setAdapter(adapter);
         SelectData();
     }
-
     private void SelectData(){
         strKq="";
         //b1 Create retrofit object
@@ -73,7 +73,6 @@ public class OrderCustomerActivity extends AppCompatActivity {
                 ls= Arrays.asList(responseSelectPrd.getOrder());
                 adapter.updateData(ls);
             }
-
             @Override
             public void onFailure(Call<ResponseOrderCustomer> call, Throwable t) {
                 strKq +=t.getMessage();

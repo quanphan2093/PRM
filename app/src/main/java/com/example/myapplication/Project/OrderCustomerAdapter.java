@@ -77,9 +77,9 @@ public class OrderCustomerAdapter extends BaseAdapter {
                     .error(R.drawable.border) // Nếu lỗi
                     .into(viewHolder.img);
             if (order.getStatusId() == 1) {
-                viewHolder.btnCancel.setVisibility(View.GONE);
-            } else {
                 viewHolder.btnCancel.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.btnCancel.setVisibility(View.GONE);
             }
             viewHolder.btnCancel.setOnClickListener(v -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());

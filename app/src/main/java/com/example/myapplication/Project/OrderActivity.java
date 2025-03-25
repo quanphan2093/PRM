@@ -25,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.Project.Models.Address;
+import com.example.myapplication.Project.Models.Cart;
 import com.example.myapplication.Project.Models.Order;
 import com.example.myapplication.Project.Models.OrderDetail;
 import com.example.myapplication.Project.Models.Payment;
@@ -65,6 +66,7 @@ public class OrderActivity extends AppCompatActivity {
     EditText location, phoneNumber, Note;
     Button btnOrder;
     private OrderProductAdapter orderAdapter;
+    private List<Product> lsProduct;
     private List<Product> selectedProducts;
     private PaymentAdapter paymentAdapter;
     private List<Payment> payments = new ArrayList<>();
@@ -92,6 +94,8 @@ public class OrderActivity extends AppCompatActivity {
         if (selectedProducts == null) {
             selectedProducts = new ArrayList<>();
         }
+        Cart cart = Cart.getInstance();
+        lsProduct = cart.getCartItems();
         orderAdapter = new OrderProductAdapter(this, selectedProducts);
         lvProduct.setAdapter(orderAdapter);
         paymentAdapter = new PaymentAdapter(payments,context);
@@ -102,7 +106,7 @@ public class OrderActivity extends AppCompatActivity {
                 processVNPayPayment();
             } else {
                 InsertAddress();
-                Intent intent = new Intent(context, OrderCustomerActivity.class);
+                Intent intent = new Intent(this, OrderCustomerActivity.class);
                 context.startActivity(intent);
             }
         });
@@ -300,8 +304,8 @@ public class OrderActivity extends AppCompatActivity {
             call.enqueue(new Callback<ResponeProduct>() {
                 @Override
                 public void onResponse(Call<ResponeProduct> call, Response<ResponeProduct> response) {
-
                     Toast.makeText(getApplicationContext(), "Sản phẩm " + pro.getProdName() + " đã thêm vào đơn hàng!", Toast.LENGTH_SHORT).show();
+//                    lsProduct.remove(pro);
                 }
 
                 @Override
